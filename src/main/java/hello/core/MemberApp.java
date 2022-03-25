@@ -7,18 +7,22 @@ import hello.core.member.Grade;
 import hello.core.member.Member;
 import hello.core.member.MemberService;
 import hello.core.member.MemberServiceImpl;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 public class MemberApp {
 
-    // psvm = public static void main을 이용하자. / command option v도 활용
     public static void main(String[] args) {
-        MemberService memberService = new MemberServiceImpl();
-        // id값은 1번(1L => Long type)이라고 치고 이름은 memberA, 등급은 VIP라고 해준다.
+//        AppConfig appConfig = new AppConfig();
+//        MemberService memberService = appConfig.memberService();
+
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        MemberService memberService = applicationContext.getBean("memberService", MemberService.class);
+
         Member member = new Member(1L, "memberA", Grade.VIP);
         memberService.join(member);
 
         Member findMember = memberService.findMember(1L);
-        // soutv실행
         System.out.println("new member = " + member.getName());
         System.out.println("find Member = " + findMember.getName());
     }
